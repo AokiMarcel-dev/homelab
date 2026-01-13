@@ -17,25 +17,23 @@ networks:
         - subnet: 192.168.0.0/24
 
 services:
-  # airvpn recommended (referral url: https://airvpn.org/?referred_by=673908)
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
     cap_add:
       - NET_ADMIN
     devices:
-      - /dev/net/tun:/dev/net/tun # If running on an LXC see readme for more info.
+      - /dev/net/tun:/dev/net/tun
     networks:
       servarrnetwork:
         ipv4_address: 192.168.0.126
     ports:
-      - 8080:8080 # qbittorrent web interface
-      - 6881:6881 # qbittorrent torrent port
-      - 6789:6789 # nzbget
-      - 9696:9696 # prowlarr
+      - 8080:8080
+      - 6881:6881
+      - 6789:6789
+      - 9696:9696
     volumes:
       - ./gluetun:/gluetun
-    # Make a '.env' file in the same directory.
     env_file:
       - .env
     healthcheck:
@@ -44,7 +42,7 @@ services:
       timeout: 10s
       retries: 5
     restart: unless-stopped
-
+    
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
