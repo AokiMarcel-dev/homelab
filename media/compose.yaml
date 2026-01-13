@@ -14,7 +14,7 @@ networks:
     name: servarrnetwork
     ipam:
       config:
-        - subnet: 172.39.0.0/24
+        - subnet: 192.168.0.0/24
 
 services:
   # airvpn recommended (referral url: https://airvpn.org/?referred_by=673908)
@@ -27,7 +27,7 @@ services:
       - /dev/net/tun:/dev/net/tun # If running on an LXC see readme for more info.
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.2
+        ipv4_address: 192.168.0.126
     ports:
       - 8080:8080 # qbittorrent web interface
       - 6881:6881 # qbittorrent torrent port
@@ -59,7 +59,7 @@ services:
       - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS} # airvpn forwarded port, pulled from .env
     volumes:
       - ./qbittorrent:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -95,7 +95,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nzbget:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -131,12 +131,12 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./sonarr:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     ports:
       - 8989:8989
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.3
+        ipv4_address: 192.168.0.161
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -149,12 +149,12 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./radarr:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     ports:
       - 7878:7878
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.4
+        ipv4_address: 192.168.0.162
 
   lidarr:
     container_name: lidarr
@@ -163,7 +163,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./lidarr:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -172,7 +172,7 @@ services:
       - 8686:8686
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.5
+        ipv4_address: 192.168.0.163
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -185,43 +185,43 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./bazarr:/config
-      - /data:/data
+      - /mnt/data:/mnt/data
     ports:
       - 6767:6767
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.6
+        ipv4_address: 192.168.0.164
 
-# Newer additions to this stack feel. Remove the '#' to add the service.
+Newer additions to this stack feel. Remove the '#' to add the service.
+
+ ytdl-sub:
+   image: ghcr.io/jmbannon/ytdl-sub:latest
+   container_name: ytdl-sub
+   environment:
+     - PUID=${PUID}
+     - PGID=${PGID}
+     - TZ=${TZ}
+     - DOCKER_MODS=linuxserver/mods:universal-cron
+   volumes:
+     - ./ytdl-sub:/config
+     - /data/youtube:/youtube
+   networks:
+     servarrnetwork:
+       ipv4_address: 192.168.0.166
+   restart: unless-stopped
 #
-#  ytdl-sub:
-#    image: ghcr.io/jmbannon/ytdl-sub:latest
-#    container_name: ytdl-sub
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#      - DOCKER_MODS=linuxserver/mods:universal-cron
-#    volumes:
-#      - ./ytdl-sub:/config
-#      - /data/youtube:/youtube
-#    networks:
-#      servarrnetwork:
-#        ipv4_address: 172.39.0.8
-#    restart: unless-stopped
-#
-#  jellyseerr:
-#    container_name: jellyseerr
-#    image: fallenbagel/jellyseerr:latest
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#    volumes:
-#      - ./jellyseerr:/app/config
-#    ports:
-#      - 5055:5055
-#    networks:
-#      servarrnetwork:
-#        ipv4_address: 172.39.0.9
-#    restart: unless-stopped
+ jellyseerr:
+   container_name: jellyseerr
+   image: fallenbagel/jellyseerr:latest
+   environment:
+     - PUID=${PUID}
+     - PGID=${PGID}
+     - TZ=${TZ}
+   volumes:
+     - ./jellyseerr:/app/config
+   ports:
+     - 5055:5055
+   networks:
+     servarrnetwork:
+       ipv4_address: 192.168.0.165
+   restart: unless-stopped
