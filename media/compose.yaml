@@ -17,23 +17,25 @@ networks:
         - subnet: 192.168.0.0/24
 
 services:
+  # airvpn recommended (referral url: https://airvpn.org/?referred_by=673908)
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
     cap_add:
       - NET_ADMIN
     devices:
-      - /dev/net/tun:/dev/net/tun
+      - /dev/net/tun:/dev/net/tun # If running on an LXC see readme for more info.
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.126
+        ipv4_address: 192.168.0.160
     ports:
-      - 8080:8080
-      - 6881:6881
-      - 6789:6789
-      - 9696:9696
+      - 8080:8080 # qbittorrent web interface
+      - 6881:6881 # qbittorrent torrent port
+      - 6789:6789 # nzbget
+      - 9696:9696 # prowlarr
     volumes:
       - ./gluetun:/gluetun
+    # Make a '.env' file in the same directory.
     env_file:
       - .env
     healthcheck:
@@ -42,7 +44,7 @@ services:
       timeout: 10s
       retries: 5
     restart: unless-stopped
-    
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -57,7 +59,7 @@ services:
       - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS} # airvpn forwarded port, pulled from .env
     volumes:
       - ./qbittorrent:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -93,7 +95,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nzbget:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -129,7 +131,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./sonarr:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     ports:
       - 8989:8989
     networks:
@@ -147,7 +149,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./radarr:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     ports:
       - 7878:7878
     networks:
@@ -161,7 +163,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./lidarr:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -183,41 +185,43 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./bazarr:/config
-      - /mnt/data:/mnt/data
+      - /data:/data
     ports:
       - 6767:6767
     networks:
       servarrnetwork:
         ipv4_address: 192.168.0.164
 
- ytdl-sub:
-   image: ghcr.io/jmbannon/ytdl-sub:latest
-   container_name: ytdl-sub
-   environment:
-     - PUID=${PUID}
-     - PGID=${PGID}
-     - TZ=${TZ}
-     - DOCKER_MODS=linuxserver/mods:universal-cron
-   volumes:
-     - ./ytdl-sub:/config
-     - /data/youtube:/youtube
-   networks:
-     servarrnetwork:
-       ipv4_address: 192.168.0.166
-   restart: unless-stopped
+# Newer additions to this stack feel. Remove the '#' to add the service.
 #
- jellyseerr:
-   container_name: jellyseerr
-   image: fallenbagel/jellyseerr:latest
-   environment:
-     - PUID=${PUID}
-     - PGID=${PGID}
-     - TZ=${TZ}
-   volumes:
-     - ./jellyseerr:/app/config
-   ports:
-     - 5055:5055
-   networks:
-     servarrnetwork:
-       ipv4_address: 192.168.0.165
-   restart: unless-stopped
+ # ytdl-sub:
+ #   image: ghcr.io/jmbannon/ytdl-sub:latest
+ #   container_name: ytdl-sub
+ #   environment:
+ #     - PUID=${PUID}
+ #     - PGID=${PGID}
+ #     - TZ=${TZ}
+ #     - DOCKER_MODS=linuxserver/mods:universal-cron
+ #   volumes:
+ #     - ./ytdl-sub:/config
+ #     - /data/youtube:/youtube
+ #   networks:
+ #     servarrnetwork:
+ #       ipv4_address: 172.39.0.8
+ #   restart: unless-stopped
+#
+  jellyseerr:
+    container_name: jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./jellyseerr:/app/config
+    ports:
+      - 5055:5055
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.9
+    restart: unless-stopped
