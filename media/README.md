@@ -130,7 +130,7 @@ sudo chown -R 1000:1000 /docker
 ## Docker Compose and .env
 Navigate to the directory you want to spin up the servarr stack in. I run mine from `/docker/servarr` but you can run it from anywhere you'd like such as `/home/user/docker/servarr`. Then download the `compose.yaml` and `.env` files from this repo.
 ```bash
-wget https://github.com/TechHutTV/homelab/raw/refs/heads/main/media/compose.yaml && wget https://github.com/TechHutTV/homelab/raw/refs/heads/main/media/.env
+wget https://github.com/AokiMarcel-dev/homelab/raw/refs/heads/main/media/compose.yaml && wget https://github.com/AokiMarcel-dev/homelab/raw/refs/heads/main/media/.env
 ```
 Most of our editing is going to be done in the `.env` file. Here you change your `UID` and `GID`, timezone, and add all your VPN keys and info. You can also make edits to the `compose.yaml` file such as the mount point locations, for example, if you are using something other than `/data:/data` or even changing the docker network IP addresses for your services.
 
