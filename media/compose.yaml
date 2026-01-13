@@ -192,8 +192,6 @@ services:
       servarrnetwork:
         ipv4_address: 192.168.0.164
 
-Newer additions to this stack feel. Remove the '#' to add the service.
-
  ytdl-sub:
    image: ghcr.io/jmbannon/ytdl-sub:latest
    container_name: ytdl-sub
