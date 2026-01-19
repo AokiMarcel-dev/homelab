@@ -14,7 +14,7 @@ networks:
     name: servarrnetwork
     #ipam:
      # config:
-     
+
 services:
   # airvpn recommended (referral url: https://airvpn.org/?referred_by=673908)
   gluetun:
