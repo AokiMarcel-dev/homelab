@@ -26,7 +26,7 @@ services:
       - /dev/net/tun:/dev/net/tun # If running on an LXC see readme for more info.
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.160
+     #   ipv4_address: 192.168.0.160
     ports:
       - 8080:8080 # qbittorrent web interface
       - 6881:6881 # qbittorrent torrent port
@@ -222,4 +222,18 @@ services:
     networks:
       servarrnetwork:
 #        ipv4_address: 172.39.0.9
+    restart: unless-stopped
+
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    networks:
+      - servarrnetwork
     restart: unless-stopped
