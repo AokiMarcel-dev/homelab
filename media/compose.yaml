@@ -32,6 +32,7 @@ services:
       - 6881:6881 # qbittorrent torrent port
       - 6789:6789 # nzbget
       - 9696:9696 # prowlarr
+      - 8191:8191 #flaresolverr
     volumes:
       - ./gluetun:/gluetun
     # Make a '.env' file in the same directory.
@@ -232,8 +233,13 @@ services:
       - LOG_HTML=false
       - CAPTCHA_SOLVER=none
       - TZ=${TZ}
-    ports:
-      - 8191:8191
-    networks:
-      - servarrnetwork
+    #ports:
+    #  - 8191:8191
+    #networks:
+     # - servarrnetwork
+    network_mode: service:gluetun
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
     restart: unless-stopped
