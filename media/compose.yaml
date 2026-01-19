@@ -37,11 +37,11 @@ services:
     # Make a '.env' file in the same directory.
     env_file:
       - .env
-    healthcheck:
-      test: ping -c 1 www.google.com || exit 1
-      interval: 20s
-      timeout: 10s
-      retries: 5
+    #healthcheck:
+     # test: ping -c 1 www.google.com || exit 1
+      #interval: 20s
+     # timeout: 10s
+     # retries: 5
     restart: unless-stopped
 
   qbittorrent:
@@ -58,7 +58,7 @@ services:
       - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS} # airvpn forwarded port, pulled from .env
     volumes:
       - ./qbittorrent:/config
-      - /data:/data
+      - /mnt/data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -77,7 +77,6 @@ services:
     container_name: deunhealth
     network_mode: "none"
     environment:
-      - LOG_LEVEL=info
       - HEALTH_SERVER_ADDRESS=127.0.0.1:9999
       - TZ=${TZ}
     restart: always
@@ -94,7 +93,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nzbget:/config
-      - /data:/data
+      - /mnt/data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -130,12 +129,12 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./sonarr:/config
-      - /data:/data
+      - /mnt/data:/data
     ports:
       - 8989:8989
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.161
+   #     ipv4_address: 192.168.0.161
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -148,12 +147,12 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./radarr:/config
-      - /data:/data
+      - /mnt/data:/data
     ports:
       - 7878:7878
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.162
+  #      ipv4_address: 192.168.0.162
 
   lidarr:
     container_name: lidarr
@@ -162,7 +161,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./lidarr:/config
-      - /data:/data
+      - /mnt/data:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -171,7 +170,7 @@ services:
       - 8686:8686
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.163
+ #       ipv4_address: 192.168.0.163
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -184,12 +183,12 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./bazarr:/config
-      - /data:/data
+      - /mnt/data:/data
     ports:
       - 6767:6767
     networks:
       servarrnetwork:
-        ipv4_address: 192.168.0.164
+        #ipv4_address: 192.168.0.164
 
 # Newer additions to this stack feel. Remove the '#' to add the service.
 #
@@ -222,5 +221,5 @@ services:
       - 5055:5055
     networks:
       servarrnetwork:
-        ipv4_address: 172.39.0.9
+#        ipv4_address: 172.39.0.9
     restart: unless-stopped
