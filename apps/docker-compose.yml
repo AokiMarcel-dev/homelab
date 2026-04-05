@@ -1,0 +1,1465 @@
+networks:
+  dashy_default:
+    external: true
+    name: "dashy_default"
+  jellyfin_default:
+    external: true
+    name: "jellyfin_default"
+  nextcloud_default:
+    external: true
+    name: "nextcloud_default"
+  servarrnetwork:
+    external: true
+    name: "servarrnetwork"
+
+services:
+
+  Dashy:
+
+    command:
+      - "yarn"
+      - "build-and-start"
+
+    container_name: "Dashy"
+
+    entrypoint:
+      - "docker-entrypoint.sh"
+
+    environment:
+      - "UID=1000"
+      - "GID=1000"
+      - "NODE_ENV=production"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NODE_VERSION=20.11.1"
+      - "YARN_VERSION=1.22.19"
+      - "PORT=8080"
+      - "DIRECTORY=/app"
+      - "IS_DOCKER=true"
+
+    hostname: "603a0e7a1590"
+
+    image: "lissy93/dashy"
+
+    ipc: "private"
+
+    labels:
+      com.docker.compose.config-hash: "c819bed51b1c57321918f966452e1478f49c3bf5fb0abd79c1babe00f6fbc38c"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:d312df81de7b697c56f9cbd859644457bc245a92a81a2bbe317da78f648ec3de"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "dashy"
+      com.docker.compose.project.config_files: "/data/compose/1/Template/Stack/dashy.yml"
+      com.docker.compose.project.working_dir: "/data/compose/1/Template/Stack"
+      com.docker.compose.service: "dashy"
+      com.docker.compose.version: "2.20.2"
+      maintainer: "Lissy93"
+      org.opencontainers.image.authors: "Alicia Sykes"
+      org.opencontainers.image.created: "2024-09-01T17:08:58.315Z"
+      org.opencontainers.image.description: "A self-hosted startpage for your server"
+      org.opencontainers.image.documentation: "https://dashy.to/docs"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "bede08c00c9938287bb3e5304db138874e9b6154"
+      org.opencontainers.image.source: "https://github.com/Lissy93/dashy"
+      org.opencontainers.image.title: "Dashy"
+      org.opencontainers.image.url: "https://github.com/Lissy93/dashy"
+      org.opencontainers.image.version: "latest"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "dashy_default"
+
+    ports:
+      - "4000:80/tcp"
+
+    restart: "always"
+
+    volumes:
+      - "/portainer/Files/AppData/Config/Dashy/conf.yml:/app/public/conf.yml"
+
+    working_dir: "/app"
+
+  bazarr:
+
+    container_name: "bazarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PGID=1000"
+      - "TZ=America/Sao_Paulo"
+      - "PUID=1000"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+
+    hostname: "293df28dfdf1"
+
+    image: "lscr.io/linuxserver/bazarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- v1.5.4-ls331 Build-date:- 2026-01-05T16:32:44+00:00"
+      com.docker.compose.config-hash: "70a647bad79e190d07719ac4a25ef270370b39a4c35a7a76b3c1e10db39f2e1f"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:ca6e27236b62b7858f7fc6b9a46c9d5da8a5b177a521befd56cac87ab14829f8"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "bazarr"
+      com.docker.compose.service: "bazarr"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "chbmb"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2026-01-05T16:32:44+00:00"
+      org.opencontainers.image.description: "[Bazarr](https://www.bazarr.media/) is a companion application\
+        \ to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define\
+        \ your preferences by TV show or movie and Bazarr takes care of everything for you."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-bazarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "e824b4215f657ac70cdc9621e9c350bb286d3c37"
+      org.opencontainers.image.revision: "e824b4215f657ac70cdc9621e9c350bb286d3c37"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-bazarr"
+      org.opencontainers.image.title: "Bazarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-bazarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "v1.5.4-ls331"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "6767:6767/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/bazarr:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+  condescending_williamson:
+
+    container_name: "condescending_williamson"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+
+    hostname: "383f17aeac1c"
+
+    image: "linuxserver/heimdall:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- v2.6.1-ls281 Build-date:- 2024-09-06T18:36:37+00:00"
+      maintainer: "aptalca"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-09-06T18:36:37+00:00"
+      org.opencontainers.image.description: "[Heimdall](https://heimdall.site) is a way to organise all\
+        \ those links to your most used web sites and web applications in a simple way.    Simplicity\
+        \ is the key to Heimdall.    Why not use it as your browser start page? It even has the ability\
+        \ to include a search bar using either Google, Bing or DuckDuckGo.  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-heimdall"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "59959cbae7674218b4aad42ad6c081497795f0f8"
+      org.opencontainers.image.revision: "59959cbae7674218b4aad42ad6c081497795f0f8"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-heimdall"
+      org.opencontainers.image.title: "Heimdall"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-heimdall/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "v2.6.1-ls281"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    network_mode: "bridge"
+
+    ports:
+      - ":443/tcp"
+      - ":80/tcp"
+
+    restart: "always"
+
+    volumes:
+      - "c5508c29901a60c4f5fbe2daa931bfa408b854817f7a71717d55da0556295e42:/config"
+
+    working_dir: "/"
+
+  deunhealth:
+    container_name: "deunhealth"
+    entrypoint:
+      - "/app"
+    environment:
+      - "HEALTH_SERVER_ADDRESS=127.0.0.1:9999"
+      - "TZ=America/Sao_Paulo"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LOG_LEVEL=info"
+    hostname: "cdda00ad58ae"
+    image: "qmcgaw/deunhealth"
+    ipc: "private"
+    labels:
+      com.docker.compose.config-hash: "f1293fa9eac7a2b3e9e2cd4e33e754a63f7913b52752ce3fd7acd66773a2bbb7"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:7b426dfc9e4ea757eb8d9036d5d872ba16f01b7eb900dd288e75ff99b16ab23f"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "deunhealth"
+      com.docker.compose.service: "deunhealth"
+      com.docker.compose.version: "5.0.1"
+      org.opencontainers.image.authors: "quentin.mcgaw@gmail.com"
+      org.opencontainers.image.created: "2025-12-22T12:44:10Z"
+      org.opencontainers.image.description: "Restart your unhealthy containers in style"
+      org.opencontainers.image.documentation: "https://github.com/qdm12/deunhealth/blob/main/README.md"
+      org.opencontainers.image.revision: "37e5bd4"
+      org.opencontainers.image.source: "https://github.com/qdm12/deunhealth"
+      org.opencontainers.image.title: "deunhealth"
+      org.opencontainers.image.url: "https://github.com/qdm12/deunhealth"
+      org.opencontainers.image.version: "latest"
+    logging:
+      driver: "json-file"
+      options: {}
+    network_mode: "none"
+    restart: "always"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    working_dir: "/"
+
+  flaresolverr:
+
+    command:
+      - "/usr/local/bin/python"
+      - "-u"
+      - "/app/flaresolverr.py"
+
+    container_name: "flaresolverr"
+
+    entrypoint:
+      - "/usr/bin/dumb-init"
+      - "--"
+
+    environment:
+      - "TZ=America/Sao_Paulo"
+      - "LOG_LEVEL=info"
+      - "LOG_HTML=false"
+      - "CAPTCHA_SOLVER=none"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305"
+      - "PYTHON_VERSION=3.13.9"
+      - "PYTHON_SHA256=ed5ef34cda36cfa2f3a340f07cac7e7814f91c7f3c411f6d3562323a866c5c66"
+
+    expose:
+      - "8191/tcp"
+      - "8192/tcp"
+
+    hostname: "64a6120bdb5f"
+
+    image: "flaresolverr/flaresolverr:latest"
+
+    ipc: "private"
+
+    labels:
+      com.docker.compose.config-hash: "13bb0a9a19f0024633a789c388487bd0c62f5f8fc754153e4a1d54a878db8090"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: "gluetun:service_healthy:true"
+      com.docker.compose.image: "sha256:2c9df6fe79644081e5146209e936ca21f56426531a457cba1124802d7ac0da6e"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "flaresolverr"
+      com.docker.compose.service: "flaresolverr"
+      com.docker.compose.version: "5.0.1"
+      org.opencontainers.image.created: "2025-11-29T02:43:01.748Z"
+      org.opencontainers.image.description: "Proxy server to bypass Cloudflare protection"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "ff65b7cc6861b64b9558dcc9b5449aada88ff48a"
+      org.opencontainers.image.source: "https://github.com/FlareSolverr/FlareSolverr"
+      org.opencontainers.image.title: "FlareSolverr"
+      org.opencontainers.image.url: "https://github.com/FlareSolverr/FlareSolverr"
+      org.opencontainers.image.version: "v3.4.6"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    restart: "unless-stopped"
+
+    user: "flaresolverr"
+
+    volumes:
+      - "d42ac7fbc2057381820d232cc6db5ab4b7153571759ce3f63faf950b227c0cf3:/config"
+
+    working_dir: "/app"
+
+  gluetun:
+
+    container_name: "gluetun"
+
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+
+    entrypoint:
+      - "/gluetun-entrypoint"
+
+    environment:
+      - "DNS_ADDRESS=1.1.1.1"
+      - "FIREWALL_OUTBOUND_SUBNETS=172.0.0.0/8,192.168.0.0/16"
+      - "TZ=America/Sao_Paulo"
+      - "DOT=off"
+      - "WIREGUARD_ADDRESSES=10.5.0.2/32"
+      - "VPN_ENDPOINT_IPV6=off"
+      - "WIREGUARD_PUBLIC_KEY=ObOAEerHpiFeJaqUbs59yihD4JbLqlC6cQn01guu3UU="
+      - "FIREWALL_VPN_INPUT_PORTS="
+      - "VPN_TYPE=wireguard"
+      - "WIREGUARD_IMPLEMENTATION=userspace"
+      - "PGID=1000"
+      - "HEALTH_VPN_DURATION_INITIAL=120s"
+      - "DNS_KEEP_NAMESERVER=on"
+      - "WIREGUARD_PRIVATE_KEY=n3B/Coa4mgQy10IkIab0cgKk5o+VrwAXUunQL+OlKSM="
+      - "SERVER_COUNTRIES=Brazil"
+      - "VPN_SERVICE_PROVIDER=nordvpn"
+      - "PUID=1000"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "VPN_INTERFACE=tun0"
+      - "OPENVPN_ENDPOINT_IP="
+      - "OPENVPN_ENDPOINT_PORT="
+      - "OPENVPN_PROTOCOL=udp"
+      - "OPENVPN_USER="
+      - "OPENVPN_PASSWORD="
+      - "OPENVPN_USER_SECRETFILE=/run/secrets/openvpn_user"
+      - "OPENVPN_PASSWORD_SECRETFILE=/run/secrets/openvpn_password"
+      - "OPENVPN_VERSION=2.6"
+      - "OPENVPN_VERBOSITY=1"
+      - "OPENVPN_FLAGS="
+      - "OPENVPN_CIPHERS="
+      - "OPENVPN_AUTH="
+      - "OPENVPN_PROCESS_USER=root"
+      - "OPENVPN_MSSFIX="
+      - "OPENVPN_CUSTOM_CONFIG="
+      - "WIREGUARD_ENDPOINT_IP="
+      - "WIREGUARD_ENDPOINT_PORT="
+      - "WIREGUARD_CONF_SECRETFILE=/run/secrets/wg0.conf"
+      - "WIREGUARD_PRIVATE_KEY_SECRETFILE=/run/secrets/wireguard_private_key"
+      - "WIREGUARD_PRESHARED_KEY="
+      - "WIREGUARD_PRESHARED_KEY_SECRETFILE=/run/secrets/wireguard_preshared_key"
+      - "WIREGUARD_ALLOWED_IPS="
+      - "WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL=0"
+      - "WIREGUARD_ADDRESSES_SECRETFILE=/run/secrets/wireguard_addresses"
+      - "WIREGUARD_MTU=1320"
+      - "SERVER_REGIONS="
+      - "SERVER_CITIES="
+      - "SERVER_HOSTNAMES="
+      - "SERVER_CATEGORIES="
+      - "ISP="
+      - "OWNED_ONLY=no"
+      - "PRIVATE_INTERNET_ACCESS_OPENVPN_ENCRYPTION_PRESET="
+      - "VPN_PORT_FORWARDING=off"
+      - "VPN_PORT_FORWARDING_LISTENING_PORT=0"
+      - "VPN_PORT_FORWARDING_PROVIDER="
+      - "VPN_PORT_FORWARDING_STATUS_FILE=/tmp/gluetun/forwarded_port"
+      - "VPN_PORT_FORWARDING_USERNAME="
+      - "VPN_PORT_FORWARDING_PASSWORD="
+      - "VPN_PORT_FORWARDING_UP_COMMAND="
+      - "VPN_PORT_FORWARDING_DOWN_COMMAND="
+      - "OPENVPN_CERT="
+      - "OPENVPN_KEY="
+      - "OPENVPN_CLIENTCRT_SECRETFILE=/run/secrets/openvpn_clientcrt"
+      - "OPENVPN_CLIENTKEY_SECRETFILE=/run/secrets/openvpn_clientkey"
+      - "OPENVPN_ENCRYPTED_KEY="
+      - "OPENVPN_ENCRYPTED_KEY_SECRETFILE=/run/secrets/openvpn_encrypted_key"
+      - "OPENVPN_KEY_PASSPHRASE="
+      - "OPENVPN_KEY_PASSPHRASE_SECRETFILE=/run/secrets/openvpn_key_passphrase"
+      - "SERVER_NUMBER="
+      - "SERVER_NAMES="
+      - "STREAM_ONLY="
+      - "FREE_ONLY="
+      - "SECURE_CORE_ONLY="
+      - "TOR_ONLY="
+      - "MULTIHOP_ONLY="
+      - "PREMIUM_ONLY="
+      - "PORT_FORWARD_ONLY="
+      - "FIREWALL_ENABLED_DISABLING_IT_SHOOTS_YOU_IN_YOUR_FOOT=on"
+      - "FIREWALL_INPUT_PORTS="
+      - "FIREWALL_DEBUG=off"
+      - "LOG_LEVEL=info"
+      - "HEALTH_SERVER_ADDRESS=127.0.0.1:9999"
+      - "HEALTH_TARGET_ADDRESSES=cloudflare.com:443,github.com:443"
+      - "HEALTH_ICMP_TARGET_IPS=1.1.1.1,8.8.8.8"
+      - "HEALTH_SMALL_CHECK_TYPE=icmp"
+      - "HEALTH_RESTART_VPN=on"
+      - "DNS_SERVER=on"
+      - "DNS_UPSTREAM_RESOLVER_TYPE=DoT"
+      - "DNS_UPSTREAM_RESOLVERS=cloudflare"
+      - "DNS_BLOCK_IPS="
+      - "DNS_BLOCK_IP_PREFIXES="
+      - "DNS_CACHING=on"
+      - "DNS_UPSTREAM_IPV6=off"
+      - "BLOCK_MALICIOUS=on"
+      - "BLOCK_SURVEILLANCE=off"
+      - "BLOCK_ADS=off"
+      - "DNS_UNBLOCK_HOSTNAMES="
+      - "DNS_REBINDING_PROTECTION_EXEMPT_HOSTNAMES="
+      - "DNS_UPDATE_PERIOD=24h"
+      - "HTTPPROXY="
+      - "HTTPPROXY_LOG=off"
+      - "HTTPPROXY_LISTENING_ADDRESS=:8888"
+      - "HTTPPROXY_STEALTH=off"
+      - "HTTPPROXY_USER="
+      - "HTTPPROXY_PASSWORD="
+      - "HTTPPROXY_USER_SECRETFILE=/run/secrets/httpproxy_user"
+      - "HTTPPROXY_PASSWORD_SECRETFILE=/run/secrets/httpproxy_password"
+      - "SHADOWSOCKS=off"
+      - "SHADOWSOCKS_LOG=off"
+      - "SHADOWSOCKS_LISTENING_ADDRESS=:8388"
+      - "SHADOWSOCKS_PASSWORD="
+      - "SHADOWSOCKS_PASSWORD_SECRETFILE=/run/secrets/shadowsocks_password"
+      - "SHADOWSOCKS_CIPHER=chacha20-ietf-poly1305"
+      - "HTTP_CONTROL_SERVER_LOG=on"
+      - "HTTP_CONTROL_SERVER_ADDRESS=:8000"
+      - "HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH=/gluetun/auth/config.toml"
+      - "HTTP_CONTROL_SERVER_AUTH_DEFAULT_ROLE={}"
+      - "UPDATER_PERIOD=0"
+      - "UPDATER_MIN_RATIO=0.8"
+      - "UPDATER_VPN_SERVICE_PROVIDERS="
+      - "UPDATER_PROTONVPN_EMAIL="
+      - "UPDATER_PROTONVPN_PASSWORD="
+      - "PUBLICIP_FILE=/tmp/gluetun/ip"
+      - "PUBLICIP_ENABLED=on"
+      - "PUBLICIP_API=ipinfo,ifconfigco,ip2location,cloudflare"
+      - "PUBLICIP_API_TOKEN="
+      - "STORAGE_FILEPATH=/gluetun/servers.json"
+      - "PPROF_ENABLED=no"
+      - "PPROF_BLOCK_PROFILE_RATE=0"
+      - "PPROF_MUTEX_PROFILE_RATE=0"
+      - "PPROF_HTTP_SERVER_ADDRESS=:6060"
+      - "VERSION_INFORMATION=on"
+
+    hostname: "64a6120bdb5f"
+
+    image: "qmcgaw/gluetun"
+
+    ipc: "private"
+
+    labels:
+      com.docker.compose.config-hash: "110211bc7414e707e07cbc4e9bd25105e9ec99df968b2b4e3da9e0badd33069d"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:96ed2de37bb33614e19c7a350b324b53c825d42073be325a098c3890bb88311e"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "gluetun"
+      com.docker.compose.service: "gluetun"
+      com.docker.compose.version: "5.0.1"
+      org.opencontainers.image.authors: "quentin.mcgaw@gmail.com"
+      org.opencontainers.image.created: "2025-12-29T05:33:29.822Z"
+      org.opencontainers.image.description: "VPN client in a thin Docker container for multiple VPN providers,\
+        \ written in Go, and using OpenVPN or Wireguard, DNS over TLS, with a few proxy servers built-in."
+      org.opencontainers.image.documentation: "https://github.com/qdm12/gluetun"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "9b9b723887af1f87d6e9beda06e35cfaabf3f0ea"
+      org.opencontainers.image.source: "https://github.com/qdm12/gluetun"
+      org.opencontainers.image.title: "gluetun"
+      org.opencontainers.image.url: "https://github.com/qdm12/gluetun"
+      org.opencontainers.image.version: "latest"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "6789:6789/tcp"
+      - "6881:6881/tcp"
+      - "8080:8080/tcp"
+      - "8191:8191/tcp"
+      - "9696:9696/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/gluetun:/gluetun"
+
+    working_dir: "/"
+
+  jellyfin:
+
+    container_name: "jellyfin"
+
+    devices:
+      - "/dev/dri:/dev/dri"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Sao_Paulo"
+      - "JELLYFIN_PublishedServerUrl=http://10.0.0.126"
+      - "PUID=1000"
+      - "PGID=1000"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/root"
+      - "LANGUAGE=en_US.UTF-8"
+      - "LANG=en_US.UTF-8"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
+      - "MALLOC_TRIM_THRESHOLD_=131072"
+      - "ATTACHED_DEVICES_PERMS=/dev/dri /dev/dvb /dev/vchiq /dev/vc-mem /dev/video1? -type c"
+
+    hostname: "27ba15a5c9a2"
+
+    image: "lscr.io/linuxserver/jellyfin:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 10.11.5ubu2404-ls15 Build-date:- 2025-12-30T13:08:42+00:00"
+      com.docker.compose.config-hash: "1fa057ef3d354bf870aa63706f213305463732d813bab3c0eb752119b96390a1"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:e3a6db81b0a40002a98b992bc7d0c5cdb60c114dd4b3c3f75a1575f52eb52d5b"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "jellyfin"
+      com.docker.compose.project.config_files: "/docker/jellyfin/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/jellyfin"
+      com.docker.compose.service: "jellyfin"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "thelamer"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2025-12-30T13:08:42+00:00"
+      org.opencontainers.image.description: "[Jellyfin](https://github.com/jellyfin/jellyfin) is a Free\
+        \ Software Media System that puts you in control of managing and streaming your media. It is an\
+        \ alternative to the proprietary Emby and Plex, to provide media from a dedicated server to end-user\
+        \ devices via multiple apps. Jellyfin is descended from Emby's 3.5.2 release and ported to the\
+        \ .NET Core framework to enable full cross-platform support. There are no strings attached, no\
+        \ premium licenses or features, and no hidden agendas: just a team who want to build something\
+        \ better and work together to achieve it."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-jellyfin"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "beef6cbbfb95530e94568764aa81b66c0abecda5"
+      org.opencontainers.image.revision: "beef6cbbfb95530e94568764aa81b66c0abecda5"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-jellyfin"
+      org.opencontainers.image.title: "Jellyfin"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-jellyfin/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "10.11.5ubu2404-ls15"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "jellyfin_default"
+
+    ports:
+      - "1900:1900/udp"
+      - "7359:7359/udp"
+      - "8096:8096/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/jellyfin/config:/config"
+      - "/mnt/data:/mnt/data"
+
+    working_dir: "/"
+
+  jellyseerr:
+
+    command:
+      - "pnpm"
+      - "start"
+
+    container_name: "jellyseerr"
+
+    entrypoint:
+      - "/sbin/tini"
+      - "--"
+
+    environment:
+      - "TZ=America/Sao_Paulo"
+      - "PUID=1000"
+      - "PGID=1000"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NODE_VERSION=22.18.0"
+      - "YARN_VERSION=1.22.22"
+
+    hostname: "de383ffe40cb"
+
+    image: "fallenbagel/jellyseerr:latest"
+
+    ipc: "private"
+
+    labels:
+      com.docker.compose.config-hash: "8e1b4dd638110baed0b6a0d74ad07dc011b16aabcf0a9dab4eb6bd312ffe98eb"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:2742757d9c41bcb4acb76c86c4ce23a8c54d5dbe93a698c815a9a34bed0b18d0"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.service: "jellyseerr"
+      com.docker.compose.version: "5.0.1"
+      org.opencontainers.image.authors: "Fallenbagel"
+      org.opencontainers.image.created: ""
+      org.opencontainers.image.description: "Open-source media request and discovery manager for Jellyfin,\
+        \ Plex, and Emby."
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.source: "https://github.com/fallenbagel/jellyseerr"
+      org.opencontainers.image.title: "Jellyseerr"
+      org.opencontainers.image.version: ""
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "5055:5055/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/jellyseerr:/app/config"
+
+    working_dir: "/app"
+
+  lidarr:
+
+    container_name: "lidarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PGID=1000"
+      - "TZ=America/Sao_Paulo"
+      - "PUID=1000"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "COMPlus_EnableDiagnostics=0"
+      - "TMPDIR=/run/lidarr-temp"
+
+    hostname: "0740e13a15d1"
+
+    image: "lscr.io/linuxserver/lidarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 3.1.0.4875-ls16 Build-date:- 2026-01-07T03:08:11+00:00"
+      com.docker.compose.config-hash: "152e8aa697cc16170210b70d217501be6c5cd33648460973aaaa5e97b8251205"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:1d705005d250b813e0d53fc02fc73387a0116e1e767dd78fc82e1a6146b644fc"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "lidarr"
+      com.docker.compose.service: "lidarr"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "Roxedus,thespad"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2026-01-07T03:08:11+00:00"
+      org.opencontainers.image.description: "[Lidarr](https://github.com/lidarr/Lidarr) is a music collection\
+        \ manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from\
+        \ your favorite artists and will grab, sort and rename them. It can also be configured to automatically\
+        \ upgrade the quality of files already downloaded when a better quality format becomes available."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-lidarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "5d3bf8645e22776536f4a527dbd7cb31177a5a81"
+      org.opencontainers.image.revision: "5d3bf8645e22776536f4a527dbd7cb31177a5a81"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-lidarr"
+      org.opencontainers.image.title: "Lidarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-lidarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "3.1.0.4875-ls16"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "8686:8686/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/lidarr:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+  mariadb:
+
+    container_name: "mariadb"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PUID=1000"
+      - "PGID=100"
+      - "MYSQL_ROOT_PASSWORD=lecram0153"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "MYSQL_DIR=/config"
+      - "DATADIR=/config/databases"
+
+    hostname: "f97a3dcdc0d5"
+
+    image: "linuxserver/mariadb:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 10.11.10-r0-ls162 Build-date:- 2024-11-12T07:43:21+00:00"
+      maintainer: "thelamer,nemchik"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-11-12T07:43:21+00:00"
+      org.opencontainers.image.description: "[Mariadb](https://mariadb.org/) is one of the most popular\
+        \ database servers. Made by the original developers of MySQL."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-mariadb"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "9b9be77c5adb7ee31be3ae7c27e13acb31d58560"
+      org.opencontainers.image.revision: "9b9be77c5adb7ee31be3ae7c27e13acb31d58560"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-mariadb"
+      org.opencontainers.image.title: "Mariadb"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-mariadb/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "10.11.10-r0-ls162"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    network_mode: "bridge"
+
+    ports:
+      - "3306:3306/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/portainer/Files/AppData/Config/Mariadb:/config"
+
+    working_dir: "/"
+
+  nextcloud:
+
+    cap_drop:
+      - "AUDIT_CONTROL"
+      - "BLOCK_SUSPEND"
+      - "DAC_READ_SEARCH"
+      - "IPC_LOCK"
+      - "IPC_OWNER"
+      - "LEASE"
+      - "LINUX_IMMUTABLE"
+      - "MAC_ADMIN"
+      - "MAC_OVERRIDE"
+      - "NET_ADMIN"
+      - "NET_BROADCAST"
+      - "SYSLOG"
+      - "SYS_ADMIN"
+      - "SYS_BOOT"
+      - "SYS_MODULE"
+      - "SYS_NICE"
+      - "SYS_PACCT"
+      - "SYS_PTRACE"
+      - "SYS_RAWIO"
+      - "SYS_RESOURCE"
+      - "SYS_TIME"
+      - "SYS_TTY_CONFIG"
+      - "WAKE_ALARM"
+
+    container_name: "nextcloud"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ="
+      - "PUID=1000"
+      - "PGID=100"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$"
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "LD_PRELOAD=/usr/lib/preloadable_libiconv.so"
+
+    hostname: "d433a4d4d7cb"
+
+    image: "linuxserver/nextcloud:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 30.0.2-ls353 Build-date:- 2024-11-26T11:51:49+00:00"
+      com.docker.compose.config-hash: "b58928cfb3911c9a58e48dcaa242919340ce0331d48d58759a2bc4416065c2bd"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: "nextcloud_db:service_started:false"
+      com.docker.compose.image: "sha256:66f880d9f80f49263fa25382b8dcf1926115a7b80a6b0b25678ffa26f62f14cd"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "nextcloud"
+      com.docker.compose.project.config_files: "/data/compose/2/Template/Stack/nextcloud.yml"
+      com.docker.compose.project.environment_file: "/data/compose/2/stack.env"
+      com.docker.compose.project.working_dir: "/data/compose/2/Template/Stack"
+      com.docker.compose.service: "nextcloud"
+      com.docker.compose.version: "2.29.2"
+      maintainer: "aptalca"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-11-26T11:51:49+00:00"
+      org.opencontainers.image.description: "[Nextcloud](https://nextcloud.com/) gives you access to all\
+        \ your files wherever you are.    Where are your photos and documents? With Nextcloud you pick\
+        \ a server of your choice, at home, in a data center or at a provider. And that is where your\
+        \ files will be. Nextcloud runs on that server, protecting your data and giving you access from\
+        \ your desktop or mobile devices. Through Nextcloud you also access, sync and share your existing\
+        \ data on that FTP drive at the office, a Dropbox or a NAS you have at home.  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-nextcloud"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "8dd00ede1f58eb2f3fc6e150af2ff567e9e324a3"
+      org.opencontainers.image.revision: "8dd00ede1f58eb2f3fc6e150af2ff567e9e324a3"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-nextcloud"
+      org.opencontainers.image.title: "Nextcloud"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-nextcloud/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "30.0.2-ls353"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "nextcloud_default"
+
+    ports:
+      - "32770:443/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/portainer/Files/AppData/Config/Nextcloud/Config:/config"
+      - "ExternalHD:/ExternalHD"
+
+    working_dir: "/"
+
+  nextcloud_db:
+
+    container_name: "nextcloud_db"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "MYSQL_ROOT_PASSWORD="
+      - "TZ="
+      - "MYSQL_DATABASE=nextcloud_db"
+      - "MYSQL_USER=nextcloud"
+      - "MYSQL_PASSWORD="
+      - "PUID=1000"
+      - "PGID=100"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "MYSQL_DIR=/config"
+      - "DATADIR=/config/databases"
+
+    expose:
+      - "3306/tcp"
+
+    hostname: "378f350f0444"
+
+    image: "linuxserver/mariadb"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 10.11.10-r0-ls162 Build-date:- 2024-11-12T07:43:21+00:00"
+      com.docker.compose.config-hash: "bf2b983daf7b33740381b110b1c07af28a574533517a4dcd208396f1c5a5b1af"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:595fb9d1d36c4edb5bbd8b60fa36116495b2fa482f7aaf194d3af19988901a88"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "nextcloud"
+      com.docker.compose.project.config_files: "/data/compose/2/Template/Stack/nextcloud.yml"
+      com.docker.compose.project.environment_file: "/data/compose/2/stack.env"
+      com.docker.compose.project.working_dir: "/data/compose/2/Template/Stack"
+      com.docker.compose.service: "nextcloud_db"
+      com.docker.compose.version: "2.29.2"
+      maintainer: "thelamer,nemchik"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-11-12T07:43:21+00:00"
+      org.opencontainers.image.description: "[Mariadb](https://mariadb.org/) is one of the most popular\
+        \ database servers. Made by the original developers of MySQL."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-mariadb"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "9b9be77c5adb7ee31be3ae7c27e13acb31d58560"
+      org.opencontainers.image.revision: "9b9be77c5adb7ee31be3ae7c27e13acb31d58560"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-mariadb"
+      org.opencontainers.image.title: "Mariadb"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-mariadb/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "10.11.10-r0-ls162"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "nextcloud_default"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/portainer/AppData/Config/Nextcloud/DB:/config"
+
+    working_dir: "/"
+
+  nzbget:
+
+    container_name: "nzbget"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=America/Sao_Paulo"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+
+    expose:
+      - "6789/tcp"
+
+    hostname: "64a6120bdb5f"
+
+    image: "lscr.io/linuxserver/nzbget:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- v25.4-ls226 Build-date:- 2026-01-09T15:43:00+00:00"
+      com.docker.compose.config-hash: "5fc947d77b230168de9936d54f8f20805622eeb930f30baba6de90c31ae4d138"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: "gluetun:service_healthy:true"
+      com.docker.compose.image: "sha256:a2623c23561c4ae0a38adf5ce748e4bd3509e69b2ff836e80bfe7b500b81ead1"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "nzbget"
+      com.docker.compose.service: "nzbget"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "thelamer"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2026-01-09T15:43:00+00:00"
+      org.opencontainers.image.description: "[Nzbget](http://nzbget.com/) is a usenet downloader, written\
+        \ in C++ and designed with performance in mind to achieve maximum download speed by using very\
+        \ little system resources."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-nzbget"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "56d78153a8e7496ad955bed25f35d0b188ac1d52"
+      org.opencontainers.image.revision: "56d78153a8e7496ad955bed25f35d0b188ac1d52"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-nzbget"
+      org.opencontainers.image.title: "Nzbget"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-nzbget/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "v25.4-ls226"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/nzbget:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+  portainr:
+
+    container_name: "portainr"
+
+    entrypoint:
+      - "/portainer"
+
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    hostname: "910cc9da9188"
+
+    image: "portainer/portainer-ce:2.21.0"
+
+    ipc: "private"
+
+    labels:
+      com.docker.desktop.extension.api.version: ">= 0.2.2"
+      com.docker.desktop.extension.icon: "https://portainer-io-assets.sfo2.cdn.digitaloceanspaces.com/logos/portainer.png"
+      com.docker.extension.additional-urls: "[{\"title\":\"Website\",\"url\":\"https://www.portainer.io?utm_campaign=DockerCon&utm_source=DockerDesktop\"\
+        },{\"title\":\"Documentation\",\"url\":\"https://docs.portainer.io\"},{\"title\":\"Support\",\"\
+        url\":\"https://join.slack.com/t/portainer/shared_invite/zt-txh3ljab-52QHTyjCqbe5RibC2lcjKA\"\
+        }]"
+      com.docker.extension.detailed-description: "<p data-renderer-start-pos=\"226\">Portainer&rsquo;s\
+        \ Docker Desktop extension gives you access to all of Portainer&rsquo;s rich management functionality\
+        \ within your docker desktop experience.</p><h2 data-renderer-start-pos=\"374\">With Portainer\
+        \ you can:</h2><ul><li>See all your running containers</li><li>Easily view all of your container\
+        \ logs</li><li>Console into containers</li><li>Easily deploy your code into containers using a\
+        \ simple form</li><li>Turn your YAML into custom templates for easy reuse</li></ul><h2 data-renderer-start-pos=\"\
+        660\">About Portainer&nbsp;</h2><p data-renderer-start-pos=\"680\">Portainer is the worlds&rsquo;\
+        \ most popular universal container management platform with more than 650,000 active monthly users.\
+        \ Portainer can be used to manage Docker Standalone, Kubernetes, Docker Swarm and Nomad environments\
+        \ through a single common interface. It includes a simple GitOps automation engine and a Kube\
+        \ API.&nbsp;</p><p data-renderer-start-pos=\"1006\">Portainer Business Edition is our fully supported\
+        \ commercial grade product for business-wide use. It includes all the functionality that businesses\
+        \ need to manage containers at scale. Visit <a class=\"sc-jKJlTe dPfAtb\" href=\"http://portainer.io/\"\
+        \ title=\"http://Portainer.io\" data-renderer-mark=\"true\">Portainer.io</a> to learn more about\
+        \ Portainer Business and <a class=\"sc-jKJlTe dPfAtb\" href=\"http://portainer.io/take-3?utm_campaign=DockerCon&amp;utm_source=Docker%20Desktop\"\
+        \ title=\"http://portainer.io/take-3?utm_campaign=DockerCon&amp;utm_source=Docker%20Desktop\"\
+        \ data-renderer-mark=\"true\">get 3 free nodes.</a></p>"
+      com.docker.extension.publisher-url: "https://www.portainer.io"
+      com.docker.extension.screenshots: "[{\"alt\": \"screenshot one\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-1.png\"\
+        },{\"alt\": \"screenshot two\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-2.png\"\
+        },{\"alt\": \"screenshot three\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-3.png\"\
+        },{\"alt\": \"screenshot four\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-4.png\"\
+        },{\"alt\": \"screenshot five\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-5.png\"\
+        },{\"alt\": \"screenshot six\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-6.png\"\
+        },{\"alt\": \"screenshot seven\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-7.png\"\
+        },{\"alt\": \"screenshot eight\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-8.png\"\
+        },{\"alt\": \"screenshot nine\", \"url\": \"https://portainer-io-assets.sfo2.digitaloceanspaces.com/screenshots/docker-extension-9.png\"\
+        }]"
+      io.portainer.server: "true"
+      org.opencontainers.image.description: "Docker container management made simple, with the world’s\
+        \ most popular GUI-based container management platform."
+      org.opencontainers.image.title: "Portainer"
+      org.opencontainers.image.vendor: "Portainer.io"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    network_mode: "bridge"
+
+    ports:
+      - "8000:8000/tcp"
+      - "9443:9443/tcp"
+
+    restart: "always"
+
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "portainer_data:/data"
+
+    working_dir: "/"
+
+  prowlarr:
+
+    container_name: "prowlarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Sao_Paulo"
+      - "PUID=1000"
+      - "PGID=1000"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "COMPlus_EnableDiagnostics=0"
+      - "TMPDIR=/run/prowlarr-temp"
+
+    expose:
+      - "9696/tcp"
+
+    hostname: "64a6120bdb5f"
+
+    image: "lscr.io/linuxserver/prowlarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 2.3.0.5236-ls134 Build-date:- 2025-12-17T04:10:50+00:00"
+      com.docker.compose.config-hash: "2145202c87cc6ecf72305ae91390eb536623c9d7f14af24321661e2e9c4172ca"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: "gluetun:service_healthy:true"
+      com.docker.compose.image: "sha256:91fd5d9a979d736c7a64df5b6ba931d9ad2e0f4f88b7c72d8c3c360f41b90e18"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "prowlarr"
+      com.docker.compose.service: "prowlarr"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "Roxedus,thespad"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2025-12-17T04:10:50+00:00"
+      org.opencontainers.image.description: "[Prowlarr](https://github.com/Prowlarr/Prowlarr) is a indexer\
+        \ manager/proxy built on the popular arr .net/reactjs base stack to integrate with your various\
+        \ PVR apps. Prowlarr supports both Torrent Trackers and Usenet Indexers. It integrates seamlessly\
+        \ with Sonarr, Radarr, Lidarr, and Readarr offering complete management of your indexers with\
+        \ no per app Indexer setup required (we do it all).  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-prowlarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "94a918a787d85ef20c6dc634348a1c54f3d39350"
+      org.opencontainers.image.revision: "94a918a787d85ef20c6dc634348a1c54f3d39350"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-prowlarr"
+      org.opencontainers.image.title: "Prowlarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-prowlarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "2.3.0.5236-ls134"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/prowlarr:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+
+    working_dir: "/"
+
+  qbittorrent:
+
+    container_name: "qbittorrent"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Sao_Paulo"
+      - "WEBUI_PORT=8080"
+      - "TORRENTING_PORT="
+      - "PUID=1000"
+      - "PGID=1000"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/config"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config"
+      - "XDG_DATA_HOME=/config"
+
+    expose:
+      - "6881/tcp"
+      - "6881/udp"
+      - "8080/tcp"
+
+    hostname: "64a6120bdb5f"
+
+    image: "lscr.io/linuxserver/qbittorrent:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 5.1.4-r1-ls436 Build-date:- 2026-01-11T07:02:52+00:00"
+      com.docker.compose.config-hash: "6ee06ec7407e809d42fc71b4d02fdc4c6677b3b43db10fe8a5a444b82975ad2e"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: "gluetun:service_healthy:true"
+      com.docker.compose.image: "sha256:d57c5ccd4d593a26c5fed5544ccdeb47b6b18442498403c587f55bddf5b19abd"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "qbittorrent"
+      com.docker.compose.service: "qbittorrent"
+      com.docker.compose.version: "5.0.1"
+      deunhealth.restart.on.unhealthy: "true"
+      maintainer: "thespad"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2026-01-11T07:02:52+00:00"
+      org.opencontainers.image.description: "The [Qbittorrent](https://www.qbittorrent.org/) project aims\
+        \ to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit\
+        \ and libtorrent-rasterbar library."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-qbittorrent"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "7d6a35ed3cabc792f43f6102804542b3f4ec1ede"
+      org.opencontainers.image.revision: "7d6a35ed3cabc792f43f6102804542b3f4ec1ede"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-qbittorrent"
+      org.opencontainers.image.title: "Qbittorrent"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-qbittorrent/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "5.1.4-r1-ls436"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/qbittorrent:/config"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+  radarr:
+
+    container_name: "radarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=America/Sao_Paulo"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "COMPlus_EnableDiagnostics=0"
+      - "TMPDIR=/run/radarr-temp"
+
+    hostname: "481d7d506682"
+
+    image: "lscr.io/linuxserver/radarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 6.0.4.10291-ls289 Build-date:- 2025-12-14T16:59:22+00:00"
+      com.docker.compose.config-hash: "6ad562f04357a389f10e0ad24d584c331dcfd97cd5ef85a4b7b78c1abe7685a6"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:e6541f9e8dc30959a12862b7db62fa4380a98bb798e2cc86858cb669f4f7f269"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "radarr"
+      com.docker.compose.service: "radarr"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "Roxedus,thespad"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2025-12-14T16:59:22+00:00"
+      org.opencontainers.image.description: "[Radarr](https://github.com/Radarr/Radarr) - A fork of Sonarr\
+        \ to work with movies à la Couchpotato.  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-radarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "900c668f0d28e8beca929db0a6850ef4451d871c"
+      org.opencontainers.image.revision: "900c668f0d28e8beca929db0a6850ef4451d871c"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-radarr"
+      org.opencontainers.image.title: "Radarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-radarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "6.0.4.10291-ls289"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "7878:7878/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/radarr:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+  sonarr:
+
+    container_name: "sonarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=America/Sao_Paulo"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$$(whoami)@$$(hostname):$$(pwd)\\$$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "SONARR_CHANNEL=v4-stable"
+      - "SONARR_BRANCH=main"
+      - "COMPlus_EnableDiagnostics=0"
+      - "TMPDIR=/run/sonarr-temp"
+
+    hostname: "af5e558524d9"
+
+    image: "lscr.io/linuxserver/sonarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 4.0.16.2944-ls300 Build-date:- 2025-12-19T23:37:17+00:00"
+      com.docker.compose.config-hash: "23f0e8dd76388d7497c366c067da824765b48dcb3f54ee6277e30de4a4c40ce9"
+      com.docker.compose.container-number: "1"
+      com.docker.compose.depends_on: ""
+      com.docker.compose.image: "sha256:b71df419e97c082c1ba505dea221091caa068709c3957e335682b94601a4bfb6"
+      com.docker.compose.oneoff: "False"
+      com.docker.compose.project: "servarr"
+      com.docker.compose.project.config_files: "/docker/servarr/compose.yaml"
+      com.docker.compose.project.working_dir: "/docker/servarr"
+      com.docker.compose.replace: "sonarr"
+      com.docker.compose.service: "sonarr"
+      com.docker.compose.version: "5.0.1"
+      maintainer: "thespad"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2025-12-19T23:37:17+00:00"
+      org.opencontainers.image.description: "[Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR\
+        \ for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your\
+        \ favorite shows and will grab, sort and rename them. It can also be configured to automatically\
+        \ upgrade the quality of files already downloaded when a better quality format becomes available.\
+        \  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-sonarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "9b43d4c3ea9c35906c42ebb8b156102f8d79fef7"
+      org.opencontainers.image.revision: "9b43d4c3ea9c35906c42ebb8b156102f8d79fef7"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-sonarr"
+      org.opencontainers.image.title: "Sonarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-sonarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "4.0.16.2944-ls300"
+
+    logging:
+      driver: "json-file"
+      options: {}
+
+    networks:
+      - "servarrnetwork"
+
+    ports:
+      - "8989:8989/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/docker/servarr/sonarr:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/data:/data"
+
+    working_dir: "/"
+
+version: "3.6"
+
+volumes:
+  ExternalHD:
+    external: true
+  c5508c29901a60c4f5fbe2daa931bfa408b854817f7a71717d55da0556295e42:
+    external: true
+  d42ac7fbc2057381820d232cc6db5ab4b7153571759ce3f63faf950b227c0cf3:
+    external: true
+  portainer_data:
+    external: true
